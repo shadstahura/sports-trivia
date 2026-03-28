@@ -7,13 +7,12 @@ const kv = new Redis({
 const getToday = () => new Date().toISOString().split("T")[0];
 
 function getTierPrompt(sport, index) {
-  if (index < 3) return `Pick 1 well-known ${sport} star — someone real fans know well but NOT the most obvious household names. NOT LeBron, Jordan, Brady, Gretzky, Kobe or the top 5 most famous players. Think second-tier stars: multiple All-Stars, won something, had a great career, but requires some actual sports knowledge to know. Be random and vary eras.`;
-  if (index < 10) return `Pick 1 solid ${sport} starter — had a 7-12 year career as a starter or key rotation player. Real dedicated fans would know them, casual fans probably wouldn't. May have made 1-2 All-Star games. Think good-not-great players who were important on playoff teams but not stars. Mix of eras and positions.`;
-  if (index < 20) return `Pick 1 ${sport} role player — had a 5-9 year career coming off the bench or playing a specific role. Known by true fans of the sport but not widely famous. Think defensive specialists, backup point guards, key bench pieces on championship teams. Mix of current and recent players.`;
-  if (index < 30) return `Pick 1 current or recent ${sport} depth player — on a roster in the last 3 years, plays limited minutes, a backup or end-of-bench player. Known inside the league but not by casual fans at all. Think 10th-12th man on a roster.`;
-  if (index < 40) return `Pick 1 obscure ${sport} player from the 1980s or 1990s — a journeyman or backup who had a 4-8 year career but never started consistently. Only hardcore fans and historians would know them. True deep cut from that era.`;
-  if (index < 50) return `Pick 1 extremely obscure ${sport} player — either from the 1960s-1970s that almost nobody remembers, OR had a very brief career of 1-3 seasons recently. Think undrafted players, 10-day contracts, under 100 games played total.`;
-  return `Pick 1 impossibly obscure ${sport} player — from the 1950s-1960s, played only a handful of games, or an international player with a brief cup of coffee in the league. Even hardcore historians might struggle with this one.`;
+  if (index < 4) return `Pick 1 all-time ${sport} legend — hall of famer, multiple champion, universally recognized as one of the greatest ever. Think LeBron James, Michael Jordan, Tom Brady, Wayne Gretzky, Babe Ruth tier. Any sports fan alive knows this person. Be random within this elite group.`;
+  if (index < 14) return `Pick 1 ${sport} star from 2015 to present who is a starter or key contributor — active or recently active player. A well-known name that any current sports fan would recognize. Think All-Stars, franchise players, guys fans see on TV regularly today. Mix of positions. No legends — just current stars.`;
+  if (index < 29) return `Pick 1 ${sport} player from 2000–2015. 60% of the time pick a starter (someone who started most games, 8+ year career, real fans know well). 40% of the time pick a role player (came off bench, specialist, known by dedicated fans but not casual ones). Be random on which type you pick. All players must have played primarily between 2000 and 2015.`;
+  if (index < 44) return `Pick 1 ${sport} role player or bench player from anywhere between 2000 and present day. Could be currently active or retired as recently as 2024. Think backup point guards, defensive specialists, 6th men, end-of-bench contributors. Known inside the league and by hardcore fans but not casual fans. Random era between 2000-2024.`;
+  if (index < 59) return `Pick 1 ${sport} player from 1990–2000 — mix of starters and role players. Some should be well-known stars from that era that older fans remember fondly. Others should be solid role players from that decade. All must have played primarily in the 1990s. Vary between famous and obscure within this era.`;
+  return `Pick 1 ${sport} player from before 1990 — getting progressively older and more obscure as the index gets higher. Early picks can be legends from the 1970s-80s. Later picks should be very obscure players from the 1960s-1970s that only true historians would know. Be random and vary the era within pre-1990.`;
 }
 
 async function generatePlayer(sport, index, excludeNames) {
@@ -57,8 +56,8 @@ export default async function handler(req, res) {
   const { sport = "NBA", index = "0" } = req.query;
   const today = getToday();
   const playerIndex = parseInt(index);
-  const playerKey = `player-v6-${sport}-${today}-${playerIndex}`;
-  const namesKey = `names-v6-${sport}-${today}`;
+  const playerKey = `player-v8-${sport}-${today}-${playerIndex}`;
+  const namesKey = `names-v8-${sport}-${today}`;
 
   try {
     // Check if this player is already cached
