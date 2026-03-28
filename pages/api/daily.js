@@ -30,9 +30,15 @@ async function generatePlayer(sport, index, excludeNames) {
       "x-api-key": process.env.ANTHROPIC_API_KEY,
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-sonnet-4-6",
       max_tokens: 800,
-      system: `You are a sports trivia expert. Only include facts you are 100% certain about. If unsure about a stat, omit it. Return valid JSON only — no markdown, no explanation.`,
+      system: `You are a sports trivia expert with perfect recall. CRITICAL RULES:
+1. Only include facts you are 100% certain about — no guessing ever
+2. If you are not sure about a draft pick number, school, grad year, or specific stat — set it to null
+3. Jersey numbers: only include numbers you are completely certain the player wore
+4. Teams: only include teams you are certain they played for, with correct years
+5. Accolades: only list awards you are 100% sure they won — no approximations
+6. Return valid JSON only — no markdown, no explanation`,
       messages: [{
         role: "user",
         content: `${tierPrompt} ${excludeStr}Be truly random. Return exactly 1 player as a raw JSON object:
@@ -51,8 +57,8 @@ export default async function handler(req, res) {
   const { sport = "NBA", index = "0" } = req.query;
   const today = getToday();
   const playerIndex = parseInt(index);
-  const playerKey = `player-v5-${sport}-${today}-${playerIndex}`;
-  const namesKey = `names-v5-${sport}-${today}`;
+  const playerKey = `player-v6-${sport}-${today}-${playerIndex}`;
+  const namesKey = `names-v6-${sport}-${today}`;
 
   try {
     // Check if this player is already cached
