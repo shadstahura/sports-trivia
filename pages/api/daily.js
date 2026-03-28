@@ -8,9 +8,9 @@ const getToday = () => new Date().toISOString().split("T")[0];
 
 function getTierPrompt(sport, index) {
   if (index < 4) return `Pick 1 all-time ${sport} legend — hall of famer, multiple champion, universally recognized as one of the greatest ever. Think LeBron James, Michael Jordan, Tom Brady, Wayne Gretzky, Babe Ruth tier. Any sports fan alive knows this person. Be random within this elite group.`;
-  if (index < 14) return `Pick 1 ${sport} star from 2015 to present who is a starter or key contributor — active or recently active player. A well-known name that any current sports fan would recognize. Think All-Stars, franchise players, guys fans see on TV regularly today. Mix of positions. No legends — just current stars.`;
-  if (index < 29) return `Pick 1 ${sport} player from 2000–2015. 60% of the time pick a starter (someone who started most games, 8+ year career, real fans know well). 40% of the time pick a role player (came off bench, specialist, known by dedicated fans but not casual ones). Be random on which type you pick. All players must have played primarily between 2000 and 2015.`;
-  if (index < 44) return `Pick 1 ${sport} role player or bench player from anywhere between 2000 and present day. Could be currently active or retired as recently as 2024. Think backup point guards, defensive specialists, 6th men, end-of-bench contributors. Known inside the league and by hardcore fans but not casual fans. Random era between 2000-2024.`;
+  if (index < 14) return `Pick 1 ${sport} player from 2010 to present. Mix it up randomly — sometimes pick a solid starter who is the 2nd-5th best player on their team (not the #1 star), sometimes pick a well-known role player or 6th man from a recent good team. Real fans know them but they are not the face of the franchise. Active or recently retired after 2015. Vary positions and teams.`;
+  if (index < 29) return `Pick 1 ${sport} player from 2000–2020. Randomly mix between: solid starters who played 8+ years and real fans know well, and key role players or 6th men who were important contributors on good teams. About half and half. No superstars, no bench warmers — just the middle tier of recognizable players from this era.`;
+  if (index < 44) return `Pick 1 ${sport} player from 2000 to present. Randomly mix between: current or recent role players and bench players (2020-present), and journeymen or backup players from 2000-2015 who bounced around teams. True fans know them, casual fans don't. End of rotation type guys from any point in this range.`;
   if (index < 59) return `Pick 1 ${sport} player from 1990–2000 — mix of starters and role players. Some should be well-known stars from that era that older fans remember fondly. Others should be solid role players from that decade. All must have played primarily in the 1990s. Vary between famous and obscure within this era.`;
   return `Pick 1 ${sport} player from before 1990 — getting progressively older and more obscure as the index gets higher. Early picks can be legends from the 1970s-80s. Later picks should be very obscure players from the 1960s-1970s that only true historians would know. Be random and vary the era within pre-1990.`;
 }
@@ -56,8 +56,8 @@ export default async function handler(req, res) {
   const { sport = "NBA", index = "0" } = req.query;
   const today = getToday();
   const playerIndex = parseInt(index);
-  const playerKey = `player-v8-${sport}-${today}-${playerIndex}`;
-  const namesKey = `names-v8-${sport}-${today}`;
+  const playerKey = `player-v11-${sport}-${today}-${playerIndex}`;
+  const namesKey = `names-v11-${sport}-${today}`;
 
   try {
     // Check if this player is already cached
